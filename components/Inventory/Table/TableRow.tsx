@@ -6,13 +6,13 @@ const TableRow = ({ onClick, data }: { onClick: any; data: any }) => {
   return (
     <tr
       onClick={onClick}
-      className={`border ${
-        2 % 2 === 0 ? 'bg-slate-100' : 'bg-slate-150'
-      }  hover:bg-slate-300 hover:cursor-pointer`}
+      className={` ${
+        2 % 2 === 0 ? 'bg-gray-100' : 'bg-slate-150'
+      }  hover:bg-gray-200 hover:cursor-pointer  border border-gray-900 `}
     >
       {values.map((value) => {
         return (
-          <td className='p-4' key={Math.random()}>
+          <td className='p-4 text-gray-900 font-medium' key={Math.random()}>
             {value as string}
           </td>
         );

@@ -1,24 +1,28 @@
 import React from 'react';
 import HamburgerMenu from './HamburgerMenu';
+import Link from 'next/link';
 import Image from 'next/image';
 
 const Logo = () => {
   return (
     <div className='w-12 h-12 relative'>
-      <Image
+      {/* <Image
         className=''
         src='/DaidoneElectric.png'
         alt='Your Company'
         layout='fill'
         quality={100}
-      />
+      /> */}
+      <Link href='/'>
+        <a className='text-white'>Inventory Control</a>
+      </Link>
     </div>
   );
 };
 
 const Navbar = () => {
   return (
-    <nav className='bg-gray-900 h-20 w-full flex justify-between items-center px-6 shrink-0'>
+    <nav className='bg-slate-900 h-20 w-full flex justify-between items-center px-6 shrink-0'>
       <Logo />
       <div>
         <HamburgerMenu />

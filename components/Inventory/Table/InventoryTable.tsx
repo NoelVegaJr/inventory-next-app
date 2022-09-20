@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
 import Table from './Table';
-import { items } from './data';
 import TableBody from './TableBody';
 import TableHead from './TableHead';
 import Filter from './Filter';
 import EditItemForm from '../Item/EditItemForm';
 import NewItemForm from '../Item/NewItemForm';
+import { useQuery } from '@tanstack/react-query';
 
 const InventoryTable = () => {
   const [filter, setFilter] = useState('');
   const [editItem, setEditItem] = useState(false);
   const [newItem, setNewItem] = useState(false);
   const [activeItem, setActiveItem] = useState();
+  const { isLoading, error, data } = useQuery(['items'], async () => {
+    const response = await fetch('/api/items');
+    const data = await response.json();
+    return data;
+  });
 
   const itemClickHandler = (item: any) => {
     setActiveItem(item);
@@ -21,7 +26,14 @@ const InventoryTable = () => {
   const closeFormHandler = () => {
     setEditItem(false);
   };
-  const filteredItems = items.filter((item) => item.name.includes(filter));
+
+  let filteredItems;
+
+  if (!isLoading) {
+    filteredItems = data.filter((item: any) =>
+      item.name.trim().toLowerCase().includes(filter.trim().toLowerCase())
+    );
+  }
 
   return (
     <>
@@ -46,10 +58,12 @@ const InventoryTable = () => {
         <EditItemForm item={activeItem} closeForm={closeFormHandler} />
       )}
       <div className='h-full overflow-y-scroll border w-full relative'>
-        <Table>
-          <TableHead headers={['Item', 'Size', 'Quantity', 'Location']} />
-          <TableBody dataList={filteredItems} onRowClick={itemClickHandler} />
-        </Table>
+        {data && (
+          <Table>
+            <TableHead headers={['Item', 'Size', 'Quantity', 'Location']} />
+            <TableBody dataList={filteredItems} onRowClick={itemClickHandler} />
+          </Table>
+        )}
       </div>
     </>
   );

@@ -1,4 +1,14 @@
 import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
+
+const addNewItem = async (item: any) => {
+  const response = await fetch('/api/items', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(item),
+  });
+};
 
 const NewItemForm = ({
   className,
@@ -11,24 +21,27 @@ const NewItemForm = ({
   const [size, setSize] = useState('');
   const [quantity, setQuantity] = useState('');
   const [location, setLocation] = useState('');
+  const queryClient = useQueryClient();
+  const addNewItemMutation = useMutation(addNewItem, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['items']);
+    },
+  });
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const formData = {
-      name: name.trim(),
+      name: name
+        .trim()
+        .split(' ')
+        .map((word) => word[0].toUpperCase() + word.slice(1))
+        .join(' '),
       size: Number(size),
       quantity: Number(quantity),
       location: location.trim(),
     };
 
-    const response = await fetch('/api/item', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
-    });
-
-    const data = await response.json();
-    console.log(data);
+    addNewItemMutation.mutate(formData);
   };
 
   return (

@@ -24,7 +24,7 @@ const Header = () => {
 };
 const Sidebar = () => {
   return (
-    <div className='hidden md:block h-full md:w-64 md:flex-col bg-gray-800'>
+    <div className='hidden md:block h-full md:w-64 md:flex-col bg-indigo-700'>
       <div className='flex min-h-0 flex-1 flex-col bg-gray-800'>
         {/* <Header /> */}
       </div>
