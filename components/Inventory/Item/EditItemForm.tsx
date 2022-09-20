@@ -12,6 +12,16 @@ const updateItem = async (item: any) => {
   return data;
 };
 
+const deleteItem = async (id: number) => {
+  const response = await fetch(`/api/items/delete`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: id }),
+  });
+  const data = await response.json();
+  return data;
+};
+
 export const EditItemForm = ({
   item,
   closeForm,
@@ -25,6 +35,11 @@ export const EditItemForm = ({
   const [location, setLocation] = useState(item.location);
   const queryClient = useQueryClient();
   const addNewItemMutation = useMutation(updateItem, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['items']);
+    },
+  });
+  const deleteItemMutation = useMutation(deleteItem, {
     onSuccess: () => {
       queryClient.invalidateQueries(['items']);
     },
@@ -44,6 +59,12 @@ export const EditItemForm = ({
       location: location.trim(),
     };
     addNewItemMutation.mutate(formData);
+    closeForm();
+  };
+
+  const handleDelete = (e: any) => {
+    e.preventDefault();
+    deleteItemMutation.mutate(item.id);
     closeForm();
   };
 
@@ -111,8 +132,11 @@ export const EditItemForm = ({
             Edit
           </button>
         </form>
-        <form className='mt-4'>
-          <button className='bg-red-600 hover:bg-red-700 w-full rounded-xl py-2 text-white '>
+        <form onSubmit={handleDelete} className='mt-4'>
+          <button
+            type='submit'
+            className='bg-red-600 hover:bg-red-700 w-full rounded-xl py-2 text-white '
+          >
             Delete
           </button>
         </form>

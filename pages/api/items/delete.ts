@@ -4,25 +4,22 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === 'POST') {
-    const item = req.body;
-    console.log(item);
+  if (req.method === 'DELETE') {
+    const { id } = req.body;
+
     try {
-      await prisma.item.update({
+      await prisma.item.delete({
         where: {
-          id: item.id,
-        },
-        data: {
-          ...item,
+          id: id,
         },
       });
       res.status(201).json({ message: 'Successful' });
       return;
     } catch (error) {
-      res.status(500).json({ message: 'Could not update item' });
+      res.status(500).json({ message: 'Could not delete item' });
       console.log(error);
     }
   } else {
-    res.status(405).json({ message: 'method not allowed' });
+    res.status(500).json({ message: 'method not allowed' });
   }
 }

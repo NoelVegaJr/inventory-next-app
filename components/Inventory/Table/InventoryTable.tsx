@@ -1,19 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import Table from './Table';
 import TableBody from './TableBody';
 import TableHead from './TableHead';
 import Filter from './Filter';
 import EditItemForm from '../Item/EditItemForm';
 import NewItemForm from '../Item/NewItemForm';
-import { useQuery } from '@tanstack/react-query';
 
-const InventoryTable = () => {
-  const [filter, setFilter] = useState('');
+const InventoryTable = ({ namespaceId }: { namespaceId: any }) => {
   const [editItem, setEditItem] = useState(false);
-  const [newItem, setNewItem] = useState(false);
   const [activeItem, setActiveItem] = useState();
-  const { isLoading, error, data } = useQuery(['items'], async () => {
-    const response = await fetch('/api/items');
+  const [filter, setFilter] = useState('');
+  const [newItem, setNewItem] = useState(false);
+  const {
+    isLoading,
+    error,
+    data: items,
+  } = useQuery(['items'], async () => {
+    const response = await fetch(`/api/namespaces/items`);
     const data = await response.json();
     return data;
   });
@@ -29,10 +33,14 @@ const InventoryTable = () => {
 
   let filteredItems;
 
-  if (!isLoading) {
-    filteredItems = data.filter((item: any) =>
-      item.name.trim().toLowerCase().includes(filter.trim().toLowerCase())
-    );
+  if (!isLoading && items) {
+    filteredItems = items.filter((item: any) => {
+      console.log(item.namespaceId === namespaceId);
+      return (
+        item.name.trim().toLowerCase().includes(filter.trim().toLowerCase()) &&
+        item.namespaceId === namespaceId
+      );
+    });
   }
 
   return (
@@ -47,6 +55,7 @@ const InventoryTable = () => {
         >
           New Item
         </button>
+
         {newItem && (
           <NewItemForm
             className='absolute top-1/2 left-1/2 -translate-x-1/2 z-50'
@@ -58,7 +67,7 @@ const InventoryTable = () => {
         <EditItemForm item={activeItem} closeForm={closeFormHandler} />
       )}
       <div className='h-full overflow-y-scroll border w-full relative'>
-        {data && (
+        {items && (
           <Table>
             <TableHead headers={['Item', 'Size', 'Quantity', 'Location']} />
             <TableBody dataList={filteredItems} onRowClick={itemClickHandler} />

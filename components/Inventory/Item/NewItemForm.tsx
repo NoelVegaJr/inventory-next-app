@@ -42,6 +42,7 @@ const NewItemForm = ({
     };
 
     addNewItemMutation.mutate(formData);
+    onClose();
   };
 
   return (

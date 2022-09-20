@@ -5,16 +5,9 @@ import Image from 'next/image';
 
 const Logo = () => {
   return (
-    <div className='w-12 h-12 relative'>
-      {/* <Image
-        className=''
-        src='/DaidoneElectric.png'
-        alt='Your Company'
-        layout='fill'
-        quality={100}
-      /> */}
+    <div className=' relative'>
       <Link href='/'>
-        <a className='text-white'>Inventory Control</a>
+        <a className='text-white text-xl'>Journaled</a>
       </Link>
     </div>
   );
