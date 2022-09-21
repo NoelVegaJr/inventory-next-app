@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Navbar from './Navbar/Navbar';
-import Sidebar from '../components/Sidebar';
+import Sidebar from './Sidebar';
 
 const Layout = ({ children }: { children: any }) => {
   const [activeNamespace, setActiveNamespace] = useState();
