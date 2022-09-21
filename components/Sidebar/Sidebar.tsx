@@ -1,43 +1,26 @@
-import { useState, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
-
-const getNamespaces = async () => {
-  const response = await fetch('/api/namespaces');
-  const data = await response.json();
-  return data;
-};
+import { useState } from 'react';
 
 const Sidebar = ({
+  namespaces,
   setActiveNamespace,
+  activeNamespace,
   show,
   toggle,
 }: {
+  namespaces: any;
   setActiveNamespace: any;
+  activeNamespace: any;
   show: boolean;
   toggle: any;
 }) => {
   const [pickingNamespace, setPickingNamespace] = useState(false);
-  const [namespaceTitle, setNamespaceTitle] = useState('');
-  const {
-    isLoading,
-    error,
-    data: namespaces,
-  } = useQuery(['namespaces'], getNamespaces);
-
-  useEffect(() => {
-    if (!isLoading && namespaces) {
-      setNamespaceTitle(namespaces[0].name);
-      setActiveNamespace(namespaces[0].id);
-    }
-  }, [isLoading, namespaces, setActiveNamespace]);
 
   const handleToggleNamepsace = () => {
     setPickingNamespace(!pickingNamespace);
   };
 
   const handlePickingNamespace = (namespace: any) => {
-    setNamespaceTitle(namespace.name);
-    setActiveNamespace(namespace.id);
+    setActiveNamespace(namespace);
     setPickingNamespace(false);
   };
 
@@ -60,7 +43,7 @@ const Sidebar = ({
         >
           {namespaces && (
             <>
-              <p className='text-white'>{namespaceTitle}</p>
+              <p className='text-white'>{activeNamespace.name}</p>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 fill='none'
