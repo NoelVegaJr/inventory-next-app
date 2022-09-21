@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Navbar from '../components/Navbar/Navbar';
-import Sidebar from '../components/Sidebar';
+import Sidebar from '../components/Sidebar/Sidebar';
 import InventoryTable from '../components/Inventory/Table/InventoryTable';
 
 const Inventory = () => {
