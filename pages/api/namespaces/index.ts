@@ -13,6 +13,16 @@ export default async function handler(
     } catch (error) {
       res.status(500).json({ message: 'Could not get namespaces' });
     }
+  } else if (req.method === 'POST') {
+    console.log('Creating new namespace');
+    try {
+      const newNamespace = await prisma.namespace.create({
+        data: req.body,
+      });
+      res.status(201).json(newNamespace);
+    } catch (error) {
+      res.status(500).json({ message: 'Could not create namespace' });
+    }
   } else {
     res.status(405).json({ message: 'method not allowed' });
   }
