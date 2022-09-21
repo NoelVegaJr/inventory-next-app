@@ -6,10 +6,10 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === 'GET') {
+    console.log('getting list of namespaces');
     try {
       const namespaces = await prisma.namespace.findMany();
       res.status(200).json(namespaces);
-      return;
     } catch (error) {
       res.status(500).json({ message: 'Could not get namespaces' });
     }

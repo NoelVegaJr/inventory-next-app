@@ -11,9 +11,11 @@ const addNewItem = async (item: any) => {
 };
 
 const NewItemForm = ({
+  namespaceId,
   className,
   onClose,
 }: {
+  namespaceId: any;
   className: string;
   onClose: any;
 }) => {
@@ -39,6 +41,7 @@ const NewItemForm = ({
       size: Number(size),
       quantity: Number(quantity),
       location: location.trim(),
+      namespaceId: namespaceId,
     };
 
     addNewItemMutation.mutate(formData);

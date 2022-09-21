@@ -1,7 +1,7 @@
 import React from 'react';
 
 const TableRow = ({ onClick, data }: { onClick: any; data: any }) => {
-  const { id, ...rest } = data;
+  const { id, namespaceId, ...rest } = data;
   const values = Object.values(rest);
   return (
     <tr

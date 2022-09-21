@@ -1,7 +1,6 @@
-import React from 'react';
+import { useState } from 'react';
 import HamburgerMenu from './HamburgerMenu';
 import Link from 'next/link';
-import Image from 'next/image';
 
 const Logo = () => {
   return (
@@ -13,12 +12,17 @@ const Logo = () => {
   );
 };
 
-const Navbar = () => {
+const Navbar = ({ showSidebar }: { showSidebar: any }) => {
+  const handleToggleSidebar = () => {
+    console.log('show sidebar');
+    showSidebar();
+  };
+
   return (
     <nav className='bg-slate-900 h-20 w-full flex justify-between items-center px-6 shrink-0'>
       <Logo />
       <div>
-        <HamburgerMenu />
+        <HamburgerMenu onClick={handleToggleSidebar} />
         <svg
           xmlns='http://www.w3.org/2000/svg'
           fill='none'

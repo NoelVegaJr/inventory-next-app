@@ -5,17 +5,25 @@ import InventoryTable from '../components/Inventory/Table/InventoryTable';
 
 const Inventory = () => {
   const [activeNamespace, setActiveNamespace] = useState();
+  const [activeSidebar, setActiveSidebar] = useState(true);
+  const handleToggleSidebar = () => {
+    console.log('show sidebar');
+    setActiveSidebar(!activeSidebar);
+  };
 
   const handleNamespaceChange = (id: any) => {
-    console.log(id);
     setActiveNamespace(id);
   };
 
   return (
-    <div className='h-screen  flex flex-col  '>
-      <Navbar />
+    <div className='h-screen  flex flex-col '>
+      <Navbar showSidebar={handleToggleSidebar} />
       <div className='flex grow overflow-hidden'>
-        <Sidebar setActiveNamespace={handleNamespaceChange} />
+        <Sidebar
+          show={activeSidebar}
+          toggle={handleToggleSidebar}
+          setActiveNamespace={handleNamespaceChange}
+        />
         <div className='w-full flex flex-col gap-2 p-2 relative'>
           <InventoryTable namespaceId={activeNamespace} />
         </div>

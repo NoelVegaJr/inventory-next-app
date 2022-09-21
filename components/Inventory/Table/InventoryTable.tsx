@@ -8,9 +8,9 @@ import EditItemForm from '../Item/EditItemForm';
 import NewItemForm from '../Item/NewItemForm';
 
 const InventoryTable = ({ namespaceId }: { namespaceId: any }) => {
-  const [editItem, setEditItem] = useState(false);
-  const [activeItem, setActiveItem] = useState();
   const [filter, setFilter] = useState('');
+  const [activeItem, setActiveItem] = useState();
+  const [editItem, setEditItem] = useState(false);
   const [newItem, setNewItem] = useState(false);
   const {
     isLoading,
@@ -35,7 +35,6 @@ const InventoryTable = ({ namespaceId }: { namespaceId: any }) => {
 
   if (!isLoading && items) {
     filteredItems = items.filter((item: any) => {
-      console.log(item.namespaceId === namespaceId);
       return (
         item.name.trim().toLowerCase().includes(filter.trim().toLowerCase()) &&
         item.namespaceId === namespaceId
@@ -60,6 +59,7 @@ const InventoryTable = ({ namespaceId }: { namespaceId: any }) => {
           <NewItemForm
             className='absolute top-1/2 left-1/2 -translate-x-1/2 z-50'
             onClose={() => setNewItem(false)}
+            namespaceId={namespaceId}
           />
         )}
       </div>
