@@ -29,7 +29,7 @@ const Sidebar = ({
       setNamespaceTitle(namespaces[0].name);
       setActiveNamespace(namespaces[0].id);
     }
-  }, [isLoading, namespaces]);
+  }, [isLoading, namespaces, setActiveNamespace]);
 
   const handleToggleNamepsace = () => {
     setPickingNamespace(!pickingNamespace);
