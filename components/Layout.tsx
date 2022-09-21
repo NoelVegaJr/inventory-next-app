@@ -1,9 +1,8 @@
-import { useState } from 'react';
-import Navbar from '../components/Navbar/Navbar';
+import React, { useState } from 'react';
+import Navbar from './Navbar/Navbar';
 import Sidebar from '../components/Sidebar';
-import InventoryTable from '../components/Inventory/Table/InventoryTable';
 
-const Inventory = () => {
+const Layout = ({ children }: { children: any }) => {
   const [activeNamespace, setActiveNamespace] = useState();
   const [activeSidebar, setActiveSidebar] = useState(false);
   const handleToggleSidebar = () => {
@@ -25,11 +24,11 @@ const Inventory = () => {
           setActiveNamespace={handleNamespaceChange}
         />
         <div className='w-full flex flex-col gap-2 p-2 relative'>
-          <InventoryTable namespaceId={activeNamespace} />
+          {children}
         </div>
       </div>
     </div>
   );
 };
 
-export default Inventory;
+export default Layout;
