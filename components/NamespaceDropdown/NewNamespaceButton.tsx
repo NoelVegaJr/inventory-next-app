@@ -36,14 +36,14 @@ const NewNamespaceButton = ({
     setNewNamespaceName('');
   };
   return (
-    <li className=' bg-green-600 hover:bg-green-700 relative grid grid-rows-1 grid-cols-1 rounded overflow-hidden'>
+    <li className=' bg-green-600 hover:bg-green-700 relative grid grid-rows-1 grid-cols-1 rounded overflow-hidden mx-4'>
       <button
         onClick={() => setNewNamespace(true)}
         className={`px-4 p-2 text-left h-full w-full text-white col-span-1 row-span-1 z-50${
           newNamespace ? 'hidden' : ' block'
         }`}
       >
-        + Site
+        + Journal
       </button>
 
       <form

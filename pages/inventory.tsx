@@ -40,6 +40,9 @@ const Inventory = () => {
       <Navbar showSidebar={handleToggleSidebar} />
       <div className='flex grow overflow-hidden'>
         <Sidebar show={showSidebar} close={handleToggleSidebar}>
+          <div>
+            <h2 className='text-lg text-white p-6'>Daidone Electric</h2>
+          </div>
           <NamespaceDropdown
             namespaces={namespaces}
             setActiveNamespace={setNamespace}
