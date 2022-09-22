@@ -52,7 +52,7 @@ const NewItemForm = ({
     <>
       <div
         onClick={onClose}
-        className='fixed top-0 left-0 h-screen w-full z-40 bg-slate-900/50'
+        className='fixed top-0 left-0 h-screen w-full z-50 bg-slate-900/50'
       ></div>
       <form
         onSubmit={handleSubmit}

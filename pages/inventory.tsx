@@ -3,6 +3,8 @@ import Navbar from '../components/Navbar/Navbar';
 import Sidebar from '../components/Sidebar/Sidebar';
 import InventoryTable from '../components/Inventory/Table/InventoryTable';
 import { useQuery } from '@tanstack/react-query';
+import NamespaceDropdown from '../components/NamespaceDropdown/NamespaceDropdown';
+import NewItemForm from '../components/Inventory/Item/NewItemForm';
 
 const getNamespaces = async () => {
   const response = await fetch('/api/namespaces');
@@ -12,7 +14,8 @@ const getNamespaces = async () => {
 
 const Inventory = () => {
   const [namespace, setNamespace] = useState({ id: null, name: null });
-  const [activeSidebar, setActiveSidebar] = useState(false);
+  const [newItem, setNewItem] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
   const {
     isLoading,
     error,
@@ -25,22 +28,43 @@ const Inventory = () => {
     }
   }, [isLoading, namespaces]);
   const handleToggleSidebar = () => {
-    console.log('show sidebar');
-    setActiveSidebar(!activeSidebar);
+    setShowSidebar(!showSidebar);
   };
+
+  if (isLoading) {
+    return <p> isloading</p>;
+  }
 
   return (
     <div className='h-screen  flex flex-col '>
       <Navbar showSidebar={handleToggleSidebar} />
       <div className='flex grow overflow-hidden'>
-        <Sidebar
-          show={activeSidebar}
-          toggle={handleToggleSidebar}
-          namespaces={namespaces}
-          activeNamespace={namespace}
-          setActiveNamespace={setNamespace}
-        />
+        <Sidebar show={showSidebar} close={handleToggleSidebar}>
+          <NamespaceDropdown
+            namespaces={namespaces}
+            setActiveNamespace={setNamespace}
+          />
+        </Sidebar>
         <div className='w-full flex flex-col gap-2 p-2 relative'>
+          <div className='flex justify-between'>
+            <h2 className='p-2 text-2xl'>Inventory</h2>
+
+            <button
+              onClick={(e) => {
+                setNewItem(!newItem);
+              }}
+              className='bg-green-600 hover:bg-green-700 px-4 py-2 rounded text-white'
+            >
+              New Item
+            </button>
+          </div>
+          {newItem && (
+            <NewItemForm
+              className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50'
+              onClose={() => setNewItem(false)}
+              namespaceId={namespace.id}
+            />
+          )}
           <InventoryTable namespaceId={namespace?.id} />
         </div>
       </div>

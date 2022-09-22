@@ -1,15 +1,5 @@
 import HamburgerMenu from './HamburgerMenu';
-import Link from 'next/link';
-
-const Logo = () => {
-  return (
-    <div className=' relative'>
-      <Link href='/'>
-        <a className='text-white text-xl'>Journaled</a>
-      </Link>
-    </div>
-  );
-};
+import Logo from '../Logo';
 
 const Navbar = ({ showSidebar }: { showSidebar: any }) => {
   const handleToggleSidebar = () => {

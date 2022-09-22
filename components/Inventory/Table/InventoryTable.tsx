@@ -11,7 +11,6 @@ const InventoryTable = ({ namespaceId }: { namespaceId: any }) => {
   const [filter, setFilter] = useState('');
   const [activeItem, setActiveItem] = useState();
   const [editItem, setEditItem] = useState(false);
-  const [newItem, setNewItem] = useState(false);
   const {
     isLoading,
     error,
@@ -44,25 +43,7 @@ const InventoryTable = ({ namespaceId }: { namespaceId: any }) => {
 
   return (
     <>
-      <div className='p-4 bg-slate-600 border rounded-t flex justify-between relative'>
-        <Filter setValue={setFilter} />
-        <button
-          onClick={(e) => {
-            setNewItem(!newItem);
-          }}
-          className='bg-green-600 px-4 py-2 rounded text-white'
-        >
-          New Item
-        </button>
-
-        {newItem && (
-          <NewItemForm
-            className='absolute top-1/2 left-1/2 -translate-x-1/2 z-50'
-            onClose={() => setNewItem(false)}
-            namespaceId={namespaceId}
-          />
-        )}
-      </div>
+      <Filter setValue={setFilter} />
       {editItem && (
         <EditItemForm item={activeItem} closeForm={closeFormHandler} />
       )}
