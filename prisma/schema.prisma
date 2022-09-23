@@ -7,6 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model user {
+  id Int @id @default(autoincrement())
+  email String 
+  password String
+}
+
 model Namespace {
   id   Int    @id @default(autoincrement())
   name String
@@ -17,8 +23,10 @@ model Item {
   id       Int    @id @default(autoincrement())
   name     String
   size     Float
+  unitSize String
   quantity Int
+  unitQuantity String
   location String
   namespace Namespace? @relation(fields: [namespaceId], references: [id])
-  namespaceId Int? 
+  namespaceId Int
 }

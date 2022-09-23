@@ -1,20 +1,26 @@
 import React from 'react';
 import TableRow from './TableRow';
 
-const TableBody = ({
-  onRowClick,
-  dataList,
-}: {
-  onRowClick: any;
-  dataList: any;
-}) => {
+const destructureItem = (keys: any, item: any) => {
+  // return a list of destrcutured items based on keys
+  let destructuredItem: any = {};
+  keys.map((key: any) => {
+    {
+      destructuredItem[key] = item[key];
+    }
+  });
+  return destructuredItem;
+};
+
+const TableBody = ({ onRowClick, data, headers }: any) => {
   return (
     <tbody>
-      {dataList.map((item: any) => {
+      {data.map((item: any) => {
         return (
           <TableRow
-            key={Math.random()}
-            data={item}
+            key={item.id}
+            headers={headers}
+            item={item}
             onClick={() => {
               onRowClick(item);
             }}

@@ -1,6 +1,7 @@
-import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
+import ItemForm from '../../Form/ItemForm/ItemForm';
+import Modal from '../../Modal/Modal';
 
 const addNewItem = async (item: any) => {
   const response = await fetch('/api/items', {
@@ -13,16 +14,12 @@ const addNewItem = async (item: any) => {
 const NewItemForm = ({
   namespaceId,
   className,
-  onClose,
+  closeForm,
 }: {
   namespaceId: any;
   className: string;
-  onClose: any;
+  closeForm: any;
 }) => {
-  const [name, setName] = useState('');
-  const [size, setSize] = useState('');
-  const [quantity, setQuantity] = useState('');
-  const [location, setLocation] = useState('');
   const queryClient = useQueryClient();
   const addNewItemMutation = useMutation(addNewItem, {
     onSuccess: () => {
@@ -30,78 +27,40 @@ const NewItemForm = ({
     },
   });
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
+  const handleSubmit = async (values: any) => {
     const formData = {
-      name: name
+      name: values.name
         .trim()
         .split(' ')
-        .map((word) => word[0].toUpperCase() + word.slice(1))
+        .map((word: string) => word[0].toUpperCase() + word.slice(1))
         .join(' '),
-      size: Number(size),
-      quantity: Number(quantity),
-      location: location.trim(),
+      size: Number(values.size),
+      unitSize: values.unitSize,
+      quantity: Number(values.quantity),
+      unitQuantity: values.unitQuantity,
+      location: values.location.trim(),
       namespaceId: namespaceId,
     };
 
     addNewItemMutation.mutate(formData);
-    onClose();
+    closeForm();
   };
-
   return (
-    <>
-      <div
-        onClick={onClose}
-        className='fixed top-0 left-0 h-screen w-full z-50 bg-slate-900/50'
-      ></div>
-      <form
-        onSubmit={handleSubmit}
-        className={`border bg-white z-50 p-6 rounded-lg flex flex-col gap-4 shadow-2xl ${className}`}
-      >
-        <div className='flex flex-col'>
-          <label>Name:</label>
-          <input
-            type='text'
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className='outline-none border border-slate-300 rounded p-2'
-          />
-        </div>
-        <div className='flex flex-col'>
-          <label>Size: </label>
-          <input
-            type='text'
-            value={size}
-            onChange={(e) => setSize(e.target.value)}
-            className='outline-none border border-slate-300 rounded p-2'
-          />
-        </div>
-        <div className='flex flex-col'>
-          <label>Quantity: </label>
-          <input
-            type='text'
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-            className='outline-none border border-slate-300 rounded p-2'
-          />
-        </div>
-        <div className='flex flex-col'>
-          <label>Location: </label>
-          <input
-            type='text'
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            className='outline-none border border-slate-300 rounded p-2'
-          />
-        </div>
-        <button
-          type='submit'
-          className='bg-green-600 w-full rounded-xl py-2 text-white'
-        >
-          Submit
-        </button>
-      </form>
-    </>
+    <Modal handleClose={closeForm} title='New item form'>
+      <div className=' '>
+        <ItemForm
+          initialValues={{
+            name: '',
+            size: '',
+            quantity: '',
+            location: '',
+            unitSize: '',
+            unitQuantity: '',
+          }}
+          onSubmitForm={handleSubmit}
+        />
+      </div>
+    </Modal>
   );
 };
 

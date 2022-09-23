@@ -17,7 +17,6 @@ export default async function handler(
     console.log(req.query.id);
     try {
       const items = await prisma.item.findMany();
-      console.log('items', items);
       res.status(200).json(items);
     } catch (error) {
       res.status(500).json({ message: 'Could not get items' });

@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Table from './Table';
-import TableBody from './TableBody';
-import TableHead from './TableHead';
 import Filter from './Filter';
 import EditItemForm from '../Item/EditItemForm';
-import NewItemForm from '../Item/NewItemForm';
 
 const InventoryTable = ({ namespaceId }: { namespaceId: any }) => {
   const [filter, setFilter] = useState('');
@@ -29,7 +26,6 @@ const InventoryTable = ({ namespaceId }: { namespaceId: any }) => {
   const closeFormHandler = () => {
     setEditItem(false);
   };
-
   let filteredItems;
 
   if (!isLoading && items) {
@@ -49,10 +45,11 @@ const InventoryTable = ({ namespaceId }: { namespaceId: any }) => {
       )}
       <div className='h-full overflow-y-scroll border w-full relative'>
         {items && (
-          <Table>
-            <TableHead headers={['Item', 'Size', 'Quantity', 'Location']} />
-            <TableBody dataList={filteredItems} onRowClick={itemClickHandler} />
-          </Table>
+          <Table
+            headers={['name', 'size', 'quantity', 'location']}
+            data={filteredItems}
+            onRowClick={itemClickHandler}
+          />
         )}
       </div>
     </>
