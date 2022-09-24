@@ -2,7 +2,6 @@ import { useState } from 'react';
 import DropdownLabel from './DropdownLabel';
 import DropdownSelector from './DropdownSelector';
 import DropdownList from './DropdownList';
-import ReactPortal from '../ReactPortal';
 
 const Dropdown = ({
   options,

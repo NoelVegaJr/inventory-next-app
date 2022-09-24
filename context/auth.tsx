@@ -1,6 +1,5 @@
 import { createContext, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { captureRejectionSymbol } from 'stream';
 const initialValues = { auth: false };
 export const AuthContext = createContext(initialValues);
 
