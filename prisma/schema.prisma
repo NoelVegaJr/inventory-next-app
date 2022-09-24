@@ -9,13 +9,13 @@ datasource db {
 
 model Session {
   id     String   @id @unique @default(cuid())
-  userId Int @unique
+  userId Int      @unique
   maxAge DateTime
 }
 
 model User {
   id       Int    @id @unique @default(autoincrement())
-  email    String 
+  email    String
   password String
 }
 
