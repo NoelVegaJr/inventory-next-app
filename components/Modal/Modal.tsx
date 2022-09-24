@@ -22,16 +22,22 @@ const Modal = ({ handleClose, children, title, className = '' }: any) => {
       opacity: 0,
     },
   };
+
+  const test = {};
+
   return (
     <Backdrop onClick={handleClose}>
       <motion.div
         onClick={(e) => e.stopPropagation()}
         style={{ zIndex: '100' }}
         className={`rounded-lg overflow-hidden bg-white`}
-        variants={dropIn}
-        initial='hidden'
-        animate='visible'
-        exit='exit'
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{
+          duration: 0.05,
+          delay: 0.1,
+          // ease: [0, 0.71, 0.2, 1.01],
+        }}
       >
         <div className='flex justify-between border-b border-b-gray-100 py-4 px-6'>
           <p className='text-lg font-semibold'>{title}</p>

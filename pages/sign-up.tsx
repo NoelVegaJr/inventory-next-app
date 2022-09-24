@@ -4,9 +4,20 @@ import TextInput from '../components/Form/TextInput';
 import BasicNavbar from '../components/Navbar/BasicNavbar';
 import PasswordInput from '../components/Form/PasswordInput';
 
-const SignUp = () => {
+const Register = () => {
   const inputStyles = 'w-full outline-none border rounded';
   const submitButtonStyles = 'w-full bg-slate-900 text-white p-2 rounded mt-4';
+
+  const handleSubmit = async (values: any) => {
+    const response = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(values),
+    });
+    const data = await response.json();
+    console.log(data);
+  };
+
   return (
     <div className='h-screen w-full flex flex-col '>
       <BasicNavbar />
@@ -24,7 +35,7 @@ const SignUp = () => {
               'Password does not match'
             ),
           })}
-          onSubmit={(values) => alert(JSON.stringify(values))}
+          onSubmit={(values) => handleSubmit(values)}
         >
           <Form>
             <TextInput label='Email' name='email' className={inputStyles} />
@@ -49,4 +60,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Register;

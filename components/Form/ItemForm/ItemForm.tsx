@@ -16,7 +16,8 @@ const updateItem = async (item: any) => {
 };
 
 const ItemForm = ({ id, initialValues, onSubmitForm }: any) => {
-  const inputStyles = 'w-full outline-none border border-slate-300 rounded p-2';
+  const inputStyles =
+    'w-full outline-none border border-slate-300 rounded p-2 focus:border-blue-300 ';
   const submitButtonStyles =
     'bg-green-600 hover:bg-green-700 w-full rounded-xl py-2 text-white mt-4';
   return (
@@ -39,7 +40,11 @@ const ItemForm = ({ id, initialValues, onSubmitForm }: any) => {
             <TextInput label='Size' name='size' className={`${inputStyles}`} />
           </div>
           <div className='w-1/2'>
-            <SelectInput label='Unit' name='unitSize' className={inputStyles}>
+            <SelectInput
+              label='Unit'
+              name='unitSize'
+              className={`${inputStyles} cursor-pointer`}
+            >
               <option value=''>Select</option>
               <option value='inch'>Inch</option>
               <option value='feet'>Feet</option>
@@ -60,7 +65,7 @@ const ItemForm = ({ id, initialValues, onSubmitForm }: any) => {
             <SelectInput
               label='Unit'
               name='unitQuantity'
-              className={inputStyles}
+              className={`${inputStyles} cursor-pointer`}
             >
               <option value=''>Select</option>
               <option value='count'>Count</option>
