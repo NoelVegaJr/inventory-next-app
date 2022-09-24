@@ -1,27 +1,23 @@
-import { createContext, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
-const initialValues = { auth: false };
-export const AuthContext = createContext(initialValues);
+import { createContext, useEffect, useState } from 'react';
+const initialValues = { session: {}, setSession: () => {} };
+export const AuthContext = createContext(initialValues as any);
 
 const AuthProvider = ({ children }: any) => {
-  const {
-    isLoading,
-    error,
-    data: auth,
-  } = useQuery(['auth'], async () => {
-    const response = await fetch('/api/auth/session');
-    const data = await response.json();
-    return data;
-  });
+  const [session, setSession] = useState({});
 
-  if (isLoading) {
-    console.log('loading auth');
-    return <h1>loading</h1>;
-  } else {
-    console.log(auth);
-  }
+  useEffect(() => {
+    fetch('/api/auth/session')
+      .then((response) => response.json())
+      .then((data) => setSession(data));
+  }, []);
 
-  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
+  console.log(session);
+
+  return (
+    <AuthContext.Provider value={{ session: session, setSession: setSession }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthProvider;

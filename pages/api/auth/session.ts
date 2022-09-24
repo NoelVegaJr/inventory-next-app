@@ -28,5 +28,5 @@ export default async function handler(
 ) {
   const session = await validateSession(req);
 
-  return res.status(200).send({ auth: session });
+  return res.status(200).send({ isAuth: session });
 }

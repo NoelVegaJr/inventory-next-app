@@ -1,68 +1,37 @@
 import { useState, useContext } from 'react';
-import { AuthContext } from '../context/auth';
 import * as Yup from 'yup';
-
 import { Formik, Form } from 'formik';
 import TextInput from '../components/Form/TextInput';
 import BasicNavbar from '../components/Navbar/BasicNavbar';
 import PasswordInput from '../components/Form/PasswordInput';
-import { useQueryClient } from '@tanstack/react-query';
-
+import getSession from '../utils/session';
 import { useRouter } from 'next/router';
 import { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '../utils/db';
 
-// const validateSession = async (cookies: any) => {
-//   if (cookies.session === undefined) {
-//     return false;
-//   }
-//   const session = await prisma.session.findFirst({
-//     where: {
-//       id: cookies.session,
-//       maxAge: {
-//         gte: new Date(),
-//       },
-//     },
-//   });
+export const getServerSideProps = async ({
+  req,
+  res,
+}: {
+  req: NextApiRequest;
+  res: NextApiResponse;
+}) => {
+  const session = await getSession(req);
+  if (session) {
+    return {
+      redirect: {
+        destination: '/profile',
+        permanent: false,
+      },
+    };
+  }
+  return { props: { session: session } };
+};
 
-//   if (session) {
-//     return true;
-//   } else {
-//     return false;
-//   }
-// };
-
-// export const getServerSideProps = async ({
-//   req,
-//   res,
-// }: {
-//   req: NextApiRequest;
-//   res: NextApiResponse;
-// }) => {
-//   const session = await validateSession(req.cookies);
-//   if (session) {
-//     return {
-//       redirect: {
-//         destination: '/profile',
-//         permanent: false,
-//       },
-//     };
-//   }
-//   return { props: {} };
-// };
-
-const SignIn = () => {
+const SignIn = ({ session }: any) => {
   const [failedLogin, setFailedLogin] = useState(false);
-  const ctx = useContext(AuthContext);
   const router = useRouter();
   const inputStyles = 'w-full outline-none border rounded';
   const submitButtonStyles = 'w-full bg-slate-900 text-white p-2 rounded mt-4';
-  const queryClient = useQueryClient();
-
-  if (ctx.auth) {
-    router.push('/profile');
-    return;
-  }
 
   const handleSubmit = async (values: any) => {
     const response = await fetch('/api/auth/sign-in', {
@@ -72,7 +41,6 @@ const SignIn = () => {
     });
     const data = await response.json();
     if (response.ok) {
-      queryClient.invalidateQueries(['auth']);
       router.push('/profile');
       return;
     } else {
