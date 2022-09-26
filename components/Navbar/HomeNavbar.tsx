@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { SessionContext } from '../../context/session-context';
 import Logo from '../Logo';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -23,17 +24,18 @@ const SignInSignup = () => {
   );
 };
 
-const HomeNavbar = ({ session, loading }: any) => {
+const HomeNavbar = () => {
   const [profileOpen, setProfileOpen] = useState(false);
   const router = useRouter();
+  const ctxSession = useContext(SessionContext);
 
   return (
     <nav className='h-20 flex items-center justify-between px-8 py-12 w-full  bg-slate-900 '>
       <Logo />
-      {!loading && (
+      {!ctxSession.loading && (
         <div className='flex items-center gap-4'>
-          {!session && <SignInSignup />}
-          {session && (
+          {!ctxSession.session && <SignInSignup />}
+          {ctxSession.session && (
             <div className='relative'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -60,7 +62,7 @@ const HomeNavbar = ({ session, loading }: any) => {
                     <form
                       onSubmit={(e) => {
                         e.preventDefault();
-                        session.destroy();
+                        ctxSession.logout();
                       }}
                       className='h-full w-full'
                     >

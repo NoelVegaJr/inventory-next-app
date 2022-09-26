@@ -26,7 +26,7 @@ export default async function handler(
     const passwordVerified = await compare(req.body.password, user.password);
 
     if (!passwordVerified) {
-      return res.status(401).send({
+      return res.status(401).json({
         ok: false,
         message: 'incorrect username or password',
         session: null,
@@ -59,14 +59,14 @@ export default async function handler(
         // expires: sessionExpiresDate,
       })
     );
-    res.status(201).send({
+    res.status(201).json({
       ok: true,
       message: 'successful login',
       session: { id: session.id, userId: session.userId },
     });
     return;
   } catch (error) {
-    res.status(500).send({ ok: false, message: 'prisma error', session: null });
+    res.status(500).json({ ok: false, message: 'prisma error', session: null });
     return;
   }
 }

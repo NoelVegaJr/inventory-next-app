@@ -5,16 +5,17 @@ import {
   QueryClientProvider,
   useQuery,
 } from '@tanstack/react-query';
-import AuthProvider from '../context/auth';
+import AuthProvider from '../context/session-context';
+import Layout from '../components/layout';
 
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
-      {/* <AuthProvider> */}
-      <Component {...pageProps} />
-      {/* </AuthProvider> */}
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </QueryClientProvider>
   );
 }

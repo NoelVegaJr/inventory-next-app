@@ -9,35 +9,6 @@ export const useSession = () => {
   const [session, setSession] = useState<Session | null>();
   const [loading, setLoading] = useState<boolean>(true);
 
-  async function destroy() {
-    const response = await fetch('/api/auth/session', {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json;' },
-      body: JSON.stringify(session),
-    });
-    const data = await response.json();
-    setSession(null);
-  }
-
-  async function login(email: string, password: string) {
-    const response = await fetch('/api/auth/sign-in', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
-    const session = await response.json();
-
-    if (session != null) {
-      setSession({
-        id: session.id,
-        userId: session.userId,
-      });
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch('/api/auth/session');
@@ -48,19 +19,42 @@ export const useSession = () => {
     fetchData();
   }, []);
 
-  if (!session) {
-    return { session: null, login: login, loadingSession: loading };
-  } else {
-    return {
-      session: {
-        id: session.id,
-        userId: session.userId,
-        destroy: destroy,
-      },
-      login: login,
-      loading: loading,
-    };
-  }
+  const logout = async () => {
+    const response = await fetch('/api/auth/session', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json;' },
+      body: JSON.stringify(session),
+    });
+    const data = await response.json();
+    setSession(null);
+  };
+
+  const login = async (email: string, password: string) => {
+    const response = await fetch('/api/auth/sign-in', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await response.json();
+
+    if (data.session != null) {
+      setSession({
+        id: data.session.id,
+        userId: data.session.userId,
+      });
+      return true;
+    } else {
+      setSession(null);
+      return false;
+    }
+  };
+
+  return {
+    session,
+    logout,
+    login,
+    loading,
+  };
 };
 
 export default useSession;
