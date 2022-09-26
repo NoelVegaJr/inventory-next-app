@@ -1,12 +1,15 @@
 import HomeNavbar from '../components/Navbar/HomeNavbar';
 import Image from 'next/image';
 import Link from 'next/link';
+import useSession from '../hooks/useSession';
+import Layout from '../components/layout';
 export default function Home() {
+  const { session, loadingSession } = useSession();
+
   return (
-    <div className='h-screen w-full flex flex-col '>
-      <HomeNavbar />
-      <div className=' h-full w-full flex bg-slate-900'>
-        <div className='w-1/2 h-full grid place-content-center transform p-10'>
+    <Layout session={session} loadingSession={loadingSession}>
+      <main className='h-full w-full flex'>
+        <section className='w-1/2 h-full grid place-content-center transform p-10'>
           <div>
             <h1 className='text-7xl font-bold mb-4 drop-shadow-2xl text-white tracking-wide'>
               Let&apos;s empower your team today.
@@ -37,10 +40,10 @@ export default function Home() {
               NO CREDIT CARD REQUIRED
             </p>
           </div>
-        </div>
+        </section>
 
-        <div className='w-1/2 flex items-center justify-center'>
-          <div className='w-1/2 h-1/2  relative'>
+        <section className='w-1/2 flex items-center justify-center '>
+          <div className='w-1/2 h-1/2 relative'>
             <Image
               src='/man-making-list-of-planning.gif'
               alt='gif'
@@ -51,8 +54,8 @@ export default function Home() {
               className='w-full'
             />
           </div>
-        </div>
-      </div>
-    </div>
+        </section>
+      </main>
+    </Layout>
   );
 }

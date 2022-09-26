@@ -1,28 +1,32 @@
-import React, { useContext } from 'react';
-import { NextApiRequest, NextApiResponse } from 'next';
-import getSession from '../utils/session';
-
-export const getServerSideProps = async ({
-  req,
-  res,
-}: {
-  req: NextApiRequest;
-  res: NextApiResponse;
-}) => {
-  const session = await getSession(req);
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/sign-in',
-        permanent: false,
-      },
-    };
-  }
-  return { props: {} };
-};
+import React, { useContext, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import useSession from '../hooks/useSession';
+import HomeNavbar from '../components/Navbar/HomeNavbar';
+import Layout from '../components/layout';
 
 const Profile = () => {
-  return <div>profile</div>;
+  const { session, loadingSession } = useSession();
+  const router = useRouter();
+
+  if (!loadingSession && !session) {
+    router.push('/sign-in');
+  }
+
+  return (
+    <Layout session={session} loadingSession={loadingSession}>
+      <main className='h-full w-full bg-slate-200'>
+        {loadingSession ? (
+          <div className='h-full grid place-content-center'>
+            <p>loading</p>
+          </div>
+        ) : (
+          <div className='h-full grid place-content-center'>
+            <div>Profile</div>
+          </div>
+        )}
+      </main>
+    </Layout>
+  );
 };
 
 export default Profile;

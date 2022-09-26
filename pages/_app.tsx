@@ -12,9 +12,9 @@ const queryClient = new QueryClient();
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <Component {...pageProps} isAuth={true} />
-      </AuthProvider>
+      {/* <AuthProvider> */}
+      <Component {...pageProps} />
+      {/* </AuthProvider> */}
     </QueryClientProvider>
   );
 }

@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
+import HomeNavbar from '../components/Navbar/HomeNavbar';
 import TextInput from '../components/Form/TextInput';
 import BasicNavbar from '../components/Navbar/BasicNavbar';
 import PasswordInput from '../components/Form/PasswordInput';
@@ -15,12 +16,11 @@ const Register = () => {
       body: JSON.stringify(values),
     });
     const data = await response.json();
-    console.log(data);
   };
 
   return (
     <div className='h-screen w-full flex flex-col '>
-      <BasicNavbar />
+      <HomeNavbar />
       <div className='h-full grid place-content-center'>
         <Formik
           initialValues={{ email: '', password: '', passwordConfirmation: '' }}

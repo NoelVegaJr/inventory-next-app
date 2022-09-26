@@ -2,67 +2,43 @@ import { useState, useContext } from 'react';
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
 import TextInput from '../components/Form/TextInput';
-import BasicNavbar from '../components/Navbar/BasicNavbar';
+import HomeNavbar from '../components/Navbar/HomeNavbar';
 import PasswordInput from '../components/Form/PasswordInput';
-import getSession from '../utils/session';
+import useSession from '../hooks/useSession';
 import { useRouter } from 'next/router';
-import { NextApiRequest, NextApiResponse } from 'next';
 
-export const getServerSideProps = async ({
-  req,
-  res,
-}: {
-  req: NextApiRequest;
-  res: NextApiResponse;
-}) => {
-  const session = await getSession(req);
-  if (session) {
-    return {
-      redirect: {
-        destination: '/profile',
-        permanent: false,
-      },
-    };
-  }
-  return { props: { session: session } };
-};
+const inputStyles = 'w-full outline-none border rounded';
+const submitButtonStyles = 'w-full bg-slate-900 text-white p-2 rounded mt-4';
 
-const SignIn = ({ session }: any) => {
-  const [failedLogin, setFailedLogin] = useState(false);
+const SignIn = () => {
+  const [isValid, setIsValid] = useState<boolean | null>(null);
+  const { session, login, loadingSession } = useSession();
   const router = useRouter();
-  const inputStyles = 'w-full outline-none border rounded';
-  const submitButtonStyles = 'w-full bg-slate-900 text-white p-2 rounded mt-4';
 
-  const handleSubmit = async (values: any) => {
-    const response = await fetch('/api/auth/sign-in', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(values),
-    });
-    const data = await response.json();
-    if (response.ok) {
-      router.push('/profile');
-      return;
-    } else {
-      setFailedLogin(true);
-    }
-    console.log(data);
-  };
+  if (session) {
+    router.push('/profile');
+  }
 
   return (
     <div className='h-screen w-full flex flex-col '>
-      <BasicNavbar />
+      <HomeNavbar />
       <div className='h-full grid place-content-center'>
         <Formik
-          initialValues={{ email: '', password: '', passwordConfirmation: '' }}
+          initialValues={{
+            email: '',
+            password: '',
+            passwordConfirmation: '',
+          }}
           validationSchema={Yup.object({
             email: Yup.string().email('Invalid email').required('Required'),
             password: Yup.string().required('Required'),
           })}
-          onSubmit={(values) => handleSubmit(values)}
+          onSubmit={async (values) =>
+            setIsValid(await login(values.email, values.password))
+          }
         >
           <Form>
-            {failedLogin && (
+            {isValid === false && (
               <p className='text-red-600'>Incorrect username or password</p>
             )}
             <TextInput label='Email' name='email' className={inputStyles} />

@@ -26,9 +26,11 @@ export default async function handler(
     const passwordVerified = await compare(req.body.password, user.password);
 
     if (!passwordVerified) {
-      return res
-        .status(401)
-        .send({ ok: false, message: 'incorrect username or password' });
+      return res.status(401).send({
+        ok: false,
+        message: 'incorrect username or password',
+        session: null,
+      });
     }
 
     await prisma.session.deleteMany({
@@ -53,14 +55,18 @@ export default async function handler(
         httpOnly: true,
         sameSite: 'strict',
         path: '/',
-        maxAge: 10,
+        maxAge: 600,
         // expires: sessionExpiresDate,
       })
     );
-    res.status(201).send({ ok: true, message: 'successful login' });
+    res.status(201).send({
+      ok: true,
+      message: 'successful login',
+      session: { id: session.id, userId: session.userId },
+    });
     return;
   } catch (error) {
-    res.status(500).send({ ok: false, message: 'prisma error' });
+    res.status(500).send({ ok: false, message: 'prisma error', session: null });
     return;
   }
 }
