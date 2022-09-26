@@ -17,7 +17,7 @@ export default function Home() {
             A platform for teams to collaborate, organize data and manage
             projects.
           </p>
-          <div className='flex gap-4'>
+          <div className='flex gap-4 mt-12'>
             <form className='flex gap-2 w-full'>
               <input
                 type='text'

@@ -8,8 +8,8 @@ export interface Session {
 export const useSession = () => {
   const [session, setSession] = useState<Session | null>();
   const [loading, setLoading] = useState<boolean>(true);
-
   useEffect(() => {
+    console.log('using session');
     const fetchData = async () => {
       const response = await fetch('/api/auth/session');
       const data = await response.json();

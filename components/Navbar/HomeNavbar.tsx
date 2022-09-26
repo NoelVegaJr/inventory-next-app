@@ -26,7 +26,6 @@ const SignInSignup = () => {
 
 const HomeNavbar = () => {
   const [profileOpen, setProfileOpen] = useState(false);
-  const router = useRouter();
   const ctxSession = useContext(SessionContext);
 
   return (
@@ -42,7 +41,7 @@ const HomeNavbar = () => {
                 fill='none'
                 viewBox='0 0 24 24'
                 strokeWidth={1.5}
-                className='w-6 h-6 stroke-white cursor-pointer'
+                className='w-8 h-8 stroke-white cursor-pointer'
                 onClick={() => setProfileOpen(!profileOpen)}
               >
                 <path
@@ -53,9 +52,11 @@ const HomeNavbar = () => {
               </svg>
               {profileOpen && (
                 <ul className='absolute w-32 -left-24 top-8 bg-slate-800 border rounded overflow-hidden text-xs text-white cursor-pointer drop-shadow-2xl '>
-                  <li className='px-6 py-2 hover:bg-sky-500'>
+                  <li className=' hover:bg-sky-500'>
                     <Link href='/profile'>
-                      <a>Your profile</a>
+                      <a className='h-full w-full px-6 py-2 block'>
+                        Your profile
+                      </a>
                     </Link>
                   </li>
                   <li className=' hover:bg-sky-500'>

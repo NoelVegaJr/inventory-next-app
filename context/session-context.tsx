@@ -1,5 +1,4 @@
 import { createContext } from 'react';
-import { useRouter } from 'next/router';
 import useSession from '../hooks/useSession';
 
 interface Session {
@@ -21,24 +20,7 @@ export const SessionContext = createContext(initialValues as Session);
 
 export const SessionContextProvider = ({ children }: { children: any }) => {
   const session = useSession();
-  const router = useRouter();
-  if (session.loading) {
-  } else {
-    if (!session.session) {
-      if (router.pathname.includes('/profile') && !session.session) {
-        router.push('/sign-in');
-        return (
-          <div className='h-full grid place-content-center'>
-            <p>Loading</p>
-          </div>
-        );
-      }
-    } else {
-      if (router.pathname.includes('/sign-in')) {
-        router.push('/profile');
-      }
-    }
-  }
+  console.log('refreshing context');
   return (
     <SessionContext.Provider value={session as Session}>
       {children}
