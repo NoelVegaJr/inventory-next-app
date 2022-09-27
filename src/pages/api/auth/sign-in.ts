@@ -26,11 +26,7 @@ export default async function handler(
     const passwordVerified = await compare(req.body.password, user.password);
 
     if (!passwordVerified) {
-      return res.status(401).json({
-        ok: false,
-        message: 'incorrect username or password',
-        session: null,
-      });
+      return res.status(401).json({});
     }
 
     await prisma.session.deleteMany({
@@ -59,11 +55,7 @@ export default async function handler(
         // expires: sessionExpiresDate,
       })
     );
-    res.status(201).json({
-      ok: true,
-      message: 'successful login',
-      session: { id: session.id, userId: session.userId },
-    });
+    res.status(201).json({ id: session.id, userId: session.userId });
     return;
   } catch (error) {
     res.status(500).json({ ok: false, message: 'prisma error', session: null });

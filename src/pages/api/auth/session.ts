@@ -36,15 +36,12 @@ export default async function handler(
     const session = await validateSession(req);
     if (!session) {
       console.log('no session found', session);
-      return res.status(200).json({ session: null });
+      return res.status(401).json({});
     }
-    return res
-      .status(200)
-      .json({ session: { id: session.id, userId: session.userId } });
+    return res.status(200).json({ id: session.id, userId: session.userId });
   } else if (req.method === 'DELETE') {
     console.log('delete');
-    const { id, userId } = (await json(req.body)) as Session;
-    console.log(id);
+    const { id } = (await json(req.body)) as Session;
 
     await prisma.session.delete({
       where: {

@@ -12,20 +12,26 @@ export const useSession = () => {
     console.log('using session');
     const fetchData = async () => {
       const response = await fetch('/api/auth/session');
-      const data = await response.json();
-      setSession(data.session);
+      const session = await response.json();
+
+      if (response.ok) {
+        setSession(session);
+      } else {
+        setSession(null);
+      }
+
       setLoading(false);
     };
     fetchData();
   }, []);
 
   const logout = async () => {
-    const response = await fetch('/api/auth/session', {
+    console.log(session);
+    await fetch('/api/auth/session', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json;' },
       body: JSON.stringify(session),
     });
-    const data = await response.json();
     setSession(null);
   };
 
@@ -35,15 +41,19 @@ export const useSession = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
     });
-    const data = await response.json();
+    const session = (await response.json()) as Session;
 
-    if (data.session != null) {
-      setSession({
-        id: data.session.id,
-        userId: data.session.userId,
+    if (response.ok) {
+      console.log('logging', session);
+      setSession((prev) => {
+        return {
+          id: session.id,
+          userId: session.userId,
+        };
       });
       return true;
     } else {
+      console.log('null session');
       setSession(null);
       return false;
     }

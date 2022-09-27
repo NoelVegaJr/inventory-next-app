@@ -8,7 +8,7 @@ const Content = ({ children }: any) => {
 
   if (!ctxSession.loading) {
     if (!ctxSession.session) {
-      if (router.pathname.includes('/profile')) {
+      if (['/profile'].includes(router.pathname)) {
         router.push('/sign-in');
         return (
           <div className='h-full grid place-content-center'>
@@ -17,7 +17,7 @@ const Content = ({ children }: any) => {
         );
       }
     } else {
-      if (router.pathname.includes('/sign-in')) {
+      if (['/sign-up', '/sign-in'].includes(router.pathname)) {
         router.push('/profile');
       }
     }
